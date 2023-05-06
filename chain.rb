@@ -14,7 +14,9 @@ class Chain
     @profit = profit
   end
   def profit
-    ((@stake_amount / @start.ask.to_f) * @middle.bid.to_f * @ending.bid.to_f) - @stake_amount
+    one = @stake_amount / @start.ask.to_f
+    profit = (one.truncate(@start.baseAssetAccuracy.to_i) * @middle.bid.to_f.truncate(@middle.quoteAssetAccuracy.to_i) * @ending.bid.to_f.truncate(@ending.quoteAssetAccuracy.to_i))
+    profit.to_f.truncate(@ending.quoteAssetAccuracy.to_i) - @stake_amount
   end
 
   def to_s
