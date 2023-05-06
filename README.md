@@ -90,14 +90,7 @@ MinimumProfitPerTrade = 0.05
 
 run this in a terminal/command prompt once youve installed ruby 3.0 or above. it might possibly work on older versions.
 
-run
-
-
 bundle install
-
-
-then
-
 
 bundle exec ruby main.rb
 
