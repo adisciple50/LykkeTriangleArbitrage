@@ -50,7 +50,10 @@ module LykkeRestApi
                            :minVolume,
                            :minOppositeVolume)
         structs << asset.new(currency['assetPairId'],
+                             currency['symbol'],
                              currency['baseAssetId'],
+                             currency['quoteAssetId'],
+                             currency['name'],
                              currency['priceAccuracy'],
                              currency['baseAssetAccuracy'],
                              currency['quoteAssetAccuracy'],
@@ -112,6 +115,7 @@ module LykkeRestApi
   def twenty_four_hour_ticker_price_change_statistics(assetPairIds:Array)
     tickers = assetPairIds.map { |id| "assetPairIds=#{id.to_s}&"}.join.delete_suffix!('&')
     pair = JSON.parse(self.class.get("/tickers?#{tickers}").body)['payload']
+    structs = []
     asset = Struct.new(
       :assetPairId,
       :volumeBase,
@@ -122,7 +126,7 @@ module LykkeRestApi
       :low,
       :timestamp,
     )
-    return asset.new(
+    structs << asset.new(
       pair['assetPairId'],
       pair['volumeBase'],
       pair['volumeQuote'],
@@ -133,22 +137,27 @@ module LykkeRestApi
       pair['timestamp']
     )
   end
-  def get_current_prices(assetPairId)
-    assetPairIds = assetPairIds.map { |id| "assetPairIds=#{id.to_s}&"}.join.delete_suffix!('&')
-    response = JSON.parse(self.class.get("/prices?#{assetPairIds}").body)['payload']
+  def get_current_prices(assetPairIds)
+    q = ""
+    assetPairIds.each do |id|
+      q << "assetPairIds=#{id.to_s}&"
+    end
+    response = JSON.parse(self.class.get("/prices?#{q.delete_suffix!('&')}").body)
+    structs = []
     response['payload'].map do |pair|
       asset = Struct.new(
         :assetPairId,
         :timestamp,
-        :bids,
-        :asks)
-      return asset.new(
+        :bid,
+        :ask)
+      structs << asset.new(
         pair['assetPairId'],
         pair['timestamp'],
-        pair['bids'],
-        pair['asks']
+        pair['bid'],
+        pair['ask']
       )
     end
+    return structs
   end
   def get_public_trades(offset,take)
     assetPairIds = assetPairIds.map { |id| "assetPairIds=#{id.to_s}&"}.join.delete_suffix!('&')

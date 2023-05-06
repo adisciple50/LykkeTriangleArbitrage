@@ -1,10 +1,8 @@
-require_relative 'lykke_public_client'
+require_relative 'results'
+# could be
+StakeCurrency = 'GBP'
+StakeAmount = 50.00
 
-public_client = LykkeRestApi::PublicClient.new
-
-public_client.get_all_assets.each do |asset_struct|
-  puts asset_struct.name
-end
-
+puts Results.new(StakeAmount,StakeCurrency).winner
 
 
