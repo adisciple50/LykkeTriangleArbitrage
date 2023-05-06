@@ -1,3 +1,5 @@
+require 'httparty'
+require_relative 'lykke_rest_api'
 module LykkeRestApi
   class PrivateApi
     include HTTParty
@@ -9,7 +11,7 @@ module LykkeRestApi
       JSON.parse(self.class.post('/orders/limit',{body:{"assetPairId" => assetPairId,"side" => side,"volume" => volume,"price" => price}}).body)
     end
     def get_order_by_id(order_id)
-      JSON.parse(self.class.get("/orders/#{order_id}").body)
+      JSON.parse(self.class.get("/orders/#{order_id.to_s}").body)
     end
   end
 end
