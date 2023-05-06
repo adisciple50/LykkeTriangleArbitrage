@@ -1,10 +1,23 @@
 require_relative 'lykke_private_api'
 require 'time'
 class Trader
-  def initialize(trading,minimum_profit_per_trade,to_execute)
-    if trading
+  def initialize(trading,minimum_profit_per_trade)
+    @trading = trading
+    @min_profit = minimum_profit_per_trade
+  end
+  def wait_until_filled(order)
+    filled = @private_api.get_order_by_id(order["payload"]["orderId"])
+    while filled != "Matched"
+      filled = @private_api.get_order_by_id(order["payload"]["orderId"])
+      puts filled["status"]
+      sleep 0.6
+    end
+    sleep  0.6
+  end
+  def trade_specified_chain(to_execute)
+    if @trading
       @private_api = LykkeRestApi::PrivateClient.new
-      if to_execute.profit.to_f >= minimum_profit_per_trade
+      if to_execute.profit.to_f >= @min_profit
         order1 = @private_api.place_a_limit_order(to_execute.start.assetPairId,'buy',to_execute.start_quantity,to_execute.start.ask)
         puts "order 1 placed - #{to_execute.start.assetPairId}"
         unless @private_api.get_order_by_id(order1["payload"]["orderId"])  == 'Matched'
@@ -26,15 +39,5 @@ class Trader
       end
       sleep 0.6
     end
-  end
-  def wait_until_filled(order)
-    filled = @private_api.get_order_by_id(order["payload"]["orderId"])
-    while filled != "Matched"
-      filled = @private_api.get_order_by_id(order["payload"]["orderId"])
-      puts filled["status"]
-      sleep 0.6
-    end
-
-    sleep  0.6
   end
 end

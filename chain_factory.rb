@@ -34,12 +34,12 @@ class ChainFactory
   def assemble_chains
     to_return = []
     @starts.each do |start|
-      puts "start is #{get_base_and_quote_s(start)}"
+      # puts "start is #{get_base_and_quote_s(start)}"
       @intermediates.filter {|middle_to_parse| middle_to_parse.baseAssetId == start.baseAssetId}.filter {|blacklist| @fiat_currencies.include?(get_base_and_quote_s(blacklist)[0]) == false}.each do |middle|
         @ends.filter{|end_to_parse| get_base_and_quote_s(end_to_parse)[0] == get_base_and_quote_s(middle)[1]}.each do |ending|
-          puts "middle is: #{get_base_and_quote_s(middle)}"
-          # ending = @ends.filter {|ending_to_parse| get_base_and_quote_s(ending_to_parse)[0] == get_base_and_quote_s(middle_to_parse)[1]}[0]
-          puts "ending: #{get_base_and_quote_s(ending)}"
+          # puts "middle is: #{get_base_and_quote_s(middle)}"
+          ending = @ends.filter {|ending_to_parse| get_base_and_quote_s(ending_to_parse)[0] == get_base_and_quote_s(middle)[1]}[0]
+          # puts "ending: #{get_base_and_quote_s(ending)}"
           if start && middle && ending
             to_return << Chain.new(start,middle,ending,@stake_amount.to_f,@start_and_end_are_the_same)
           end

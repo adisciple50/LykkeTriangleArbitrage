@@ -21,7 +21,7 @@ class Chain
     @profit = profit
   end
   def profit
-    profit = @start_quantity * @middle_quantity * @end_quantity
+    profit = @end_quantity
     profit.to_f.truncate(@ending.quoteAssetAccuracy.to_i) - @stake_amount
   end
 

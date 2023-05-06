@@ -1,8 +1,20 @@
 require_relative 'results'
-# could be
+require_relative 'trader'
 StakeCurrency = 'GBP'
-StakeAmount = 50.00
+StakeAmount = 40.00
+Trading = false
+MinimumProfitPerTrade = 0.05
 
-puts Results.new(StakeAmount,StakeCurrency).sorted_chains
+trader = Trader.new(Trading,MinimumProfitPerTrade)
+
+while true
+  winner = Results.new(StakeAmount,StakeCurrency).winner
+  puts winner
+  # executes the winning trade sequence
+  trader.trade_specified_chain(winner)
+  sleep 0.6
+end
+
+
 
 
