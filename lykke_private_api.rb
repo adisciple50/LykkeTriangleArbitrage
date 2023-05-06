@@ -1,7 +1,7 @@
 require 'httparty'
 require_relative 'lykke_rest_api'
 module LykkeRestApi
-  class PrivateApi
+  class PrivateClient
     include HTTParty
     include LykkeRestApi
     base_uri 'https://hft-apiv2.lykke.com/api'
