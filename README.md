@@ -5,7 +5,7 @@ only executes profitable trade sequences using the triangle arbitrage strategy.
 
 ## Prerequisites
 
-* copy of all the files execpt for .idea - theres no harm in downloading the .idea folder as well
+* a copy of all the files except for .idea - theres no harm in downloading the .idea folder as well
 * an installation of ruby 3.0 or above
 * bundler installed as well - installed by defualt on ruby 3.0 or above.
 
