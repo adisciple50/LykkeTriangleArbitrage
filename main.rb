@@ -3,6 +3,6 @@ require_relative 'results'
 StakeCurrency = 'GBP'
 StakeAmount = 50.00
 
-puts Results.new(StakeAmount,StakeCurrency).winner
+puts Results.new(StakeAmount,StakeCurrency).sorted_chains
 
 
