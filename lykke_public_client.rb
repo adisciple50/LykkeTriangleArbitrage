@@ -11,7 +11,7 @@ module LykkeRestApi
     ##
     # see lykke_rest_api.rb or README.MD for how to properly set up this bot
 
-    headers {"Authorization" => "Bearer #{API_KEY}"}
+    headers 'Authorization' => "Bearer #{LykkeRestApi::API_KEY}"
 
     ##
     # get all currencies and assets

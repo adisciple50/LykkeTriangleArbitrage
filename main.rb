@@ -2,7 +2,7 @@ require_relative 'results'
 require_relative 'trader'
 StakeCurrency = 'GBP'
 StakeAmount = 40.00
-Trading = false 
+Trading = false
 MinimumProfitPerTrade = 0.05
 
 trader = Trader.new(Trading,MinimumProfitPerTrade)

@@ -5,19 +5,29 @@ module LykkeRestApi
     include HTTParty
     include LykkeRestApi
     base_uri 'https://hft-apiv2.lykke.com/api'
-    headers {"Authorization" => "Bearer #{API_KEY}"}
+    # header_struct = Struct.new{:Authorization,}
+    headers 'Authorization' => "Bearer #{LykkeRestApi::API_KEY}",'Content-Type' => 'application/json'
+
 
     def place_a_limit_order(assetPairId,side,volume,price)
-      request = self.class.post('/orders/limit',{body:{assetPairId: assetPairId,side: side,volume: volume.to_f,price:price.to_f}})
+      request = self.class.post('/orders/limit',{body:{'assetPairId' => assetPairId.to_s, 'side' => side, 'volume' => volume.to_f, 'price' => price.to_f}})
       begin
-        return JSON.parse(request.body)
+        json = JSON.parse(request.body)
+        puts json["error"]
+        puts json
+        return json
       rescue
         puts request.response
         exit
       end
     end
     def get_order_by_id(order_id)
-      JSON.parse(self.class.get("/orders/#{order_id.to_s}").body)
+    begin
+      return JSON.parse(self.class.get("/orders/#{order_id.to_s}").body)
+    rescue
+      puts request.response
+      exit
+    end
     end
   end
 end
